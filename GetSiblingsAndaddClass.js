@@ -1,4 +1,10 @@
-window.node2 = function(node){
+window.node2 = function(nodeOrSelector){
+  let node
+  if(typeof(nodeOrSelector) === 'string'){
+    node = document.querySelector(nodeOrSelector)
+  }else{
+    node = nodeOrSelector
+  }
   return {
     getSiblings:function () {
       let allChildren = node.parentNode.children
@@ -24,6 +30,6 @@ window.node2 = function(node){
       //abc为class名字，布尔值控制是否添加
   }
 }
-var node2 = node2(item3)
+var node2 = node2('#item3')
 console.log(node2.getSiblings.call(node2))
-node2.addClasses.call(node2,{a:true,b:true,c:false})
+node2.addClasses.call(node2,{lightgreen:true})
