@@ -1,14 +1,14 @@
-function addClasses(node,classes){
+let combuDOM = {}
+combuDOM.addClasses = function (node,classes){
   for(let key in classes){
     let value = classes[key]
     let methodName = value?'add':'remove'
     node.classList[methodName](key)
   }
   }
-  addClasses(item2,{a:true,b:true,c:false})
   
   //abc为class名字，布尔值控制是否添加
-  function getSiblings(node) {
+combuDOM.getSiblings =  function (node) {
     let allChildren = node.parentNode.children
     let array = {
       length: 0
@@ -21,4 +21,6 @@ function addClasses(node,classes){
     }
     return array
   }
-  console.log(getSiblings(item2))
+
+  combuDOM.addClasses(item2,{a:true,b:true,c:false})
+  console.log(combuDOM.getSiblings(item2))
