@@ -1,35 +1,41 @@
-window.node2 = function(nodeOrSelector){
-  let node
-  if(typeof(nodeOrSelector) === 'string'){
-    node = document.querySelector(nodeOrSelector)
-  }else{
-    node = nodeOrSelector
+window.node2 = function(nodeOrSelector) {
+  let nodes = {}
+  if (typeof(nodeOrSelector) === 'string') {
+    let temp = document.querySelectorAll(nodeOrSelector)
+    for (let i = 0; i < temp.length; i++) {
+      nodes[i] = temp[i]
+    }
+    nodes.length = temp.length
+  } else if (nodeOrSelector instanceof node) {
+    nodes = {
+      0: nodeOrSelector,
+      length: 1
+    }
   }
-  return {
-    getSiblings:function () {
-      let allChildren = node.parentNode.children
-      let array = {
-        length: 0
-      }
-      for (let i = 0; i < allChildren.length; i++) {
-        if (allChildren[i] !== node) {
-          array[array.length] = allChildren[i]
-          array.length += 1
+  nodes.addClasses = function(classes) {
+    classes.forEach((value) => {
+        for (let i = 0; i < nodes.length; i++) {
+          nodes[i].classList.add(value)
         }
-      }
-      return array
-    },
-    addClasses: function (classes){
-      for(let key in classes){
-        let value = classes[key]
-        let methodName = value?'add':'remove'
-        node.classList[methodName](key)
-      }
-      }
-      
+      })
       //abc为class名字，布尔值控制是否添加
   }
+  nodes.text = function(text) {
+    if (text === undefined) {
+      let texts = []
+      for (let i = 0; i < nodes.length; i++) {
+        texts.push(nodes[i].textContent)
+      }
+      return texts
+    } else {
+      for (let i = 0; i < nodes.length; i++) {
+        nodes[i].textContent = text
+      }
+    }
+  }
+  return nodes
 }
-var node2 = node2('#item3')
-console.log(node2.getSiblings.call(node2))
-node2.addClasses.call(node2,{lightgreen:true})
+
+var node2 = node2('ul>li')
+
+console.log(node2.text())
