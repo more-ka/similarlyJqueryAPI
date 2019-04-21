@@ -26,18 +26,24 @@ var server = http.createServer(function (request, response) {
 
 
   console.log('得到 HTTP 路径\n' + path)
-  if (path === '/index.html') {
-    response.setHeader('Content-Type','text/html')
-    response.write('<!DOCTYPE html><html lang="ZH-hans"><head><meta charset="UTF-8">'+
-    '<link rel="stylesheet" href="style"></head>'+
-    '<body><h1>你好</h1></body>'+
-    '<script src="script"></script></html>')
-    response.end()
-  }else if(path === '/xxx'){
+  if(path === '/'){
+    let string = fs.readFileSync('./index.html', 'utf8')
     response.statusCode = 200
-    response.setHeader('Content-Type','text/json;charset=utf-8')
-    response.setHeader('Access-Control-Allow-Origin','http://localhost:3000')
-    response.write(` {
+    response.setHeader('Content-Type', 'text/html;charset=utf-8')
+    response.write(string)
+    response.end()
+  }else if(path==='/main.js'){
+    let string = fs.readFileSync('./main.js', 'utf8')
+    response.statusCode = 200
+    response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
+    response.write(string)
+    response.end()
+  }else if(path==='/xxx'){
+    response.statusCode = 200
+    response.setHeader('Content-Type', 'text/json;charset=utf-8')
+    response.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.write(`
+    {
       "note":{
         "to": "小谷",
         "from": "方方",
@@ -45,23 +51,18 @@ var server = http.createServer(function (request, response) {
         "content": "hi"
       }
     }
-`)
+    `)
     response.end()
-  } 
-  if (path === '/style') {
-    response.setHeader('Content-Type','text/css')
-    response.write('body{background:#ddd}h1{color: red}')
-    response.end()
-  }
-  if (path === '/script') {
-    response.setHeader('Content-Type','text/javascript')
-    response.write('alert("这是javascript控制的")')
-    response.end()
-  } else {
+  }else{
     response.statusCode = 404
+    response.setHeader('Content-Type', 'text/html;charset=utf-8')
+    response.write(`
+      {
+        "error": "not found"
+      }
+    `)
     response.end()
   }
-
 
 
   /******** 代码结束，下面不要看 ************/
